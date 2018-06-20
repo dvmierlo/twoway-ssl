@@ -11,9 +11,10 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd">
 
     <context:property-placeholder location="application-${env}.properties"/>
-    
+
     <http:listener-config name="HTTP_Server_Listener_Configuration" host="0.0.0.0" port="${http.server.port}" doc:name="HTTP Listener Configuration" protocol="HTTPS">
         <tls:context>
+            <tls:trust-store path="clientStore.jks" password="password" type="jks"/>
             <tls:key-store type="jks" path="serverStore.jks" alias="selfsigned" keyPassword="password" password="password"/>
         </tls:context>
     </http:listener-config>
@@ -23,6 +24,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     <http:request-config name="HTTP_Client_Secure_Request_Configuration" protocol="HTTPS" host="localhost" port="${http.server.port}" doc:name="HTTP Request Configuration">
         <tls:context>
             <tls:trust-store path="serverStore.jks" password="password" type="jks"/>
+            <tls:key-store type="jks" path="clientStore.jks" alias="selfsigned" keyPassword="password" password="password"/>
         </tls:context>
     </http:request-config>
     
